@@ -1,0 +1,85 @@
+<% 
+    var pageTitle = "";
+    if (title)
+        pageTitle = title + " | ";
+    pageTitle += confing.title;
+    var rootlink = confing.root;
+    var menu = confing.menu;
+    var user = session.user;
+%>
+<!doctype html>
+<html>
+
+<head>
+  <title><%= pageTitle %></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="<%= rootlink %>/js/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="<%= rootlink %>/css/semantic.min.css">
+  <link rel="stylesheet" href="<%= rootlink %>/css/sweetalert2.css">
+  <script src="<%= rootlink %>/js/semantic.min.js"></script>
+  <script src="<%= rootlink %>/js/base64.js"></script>
+  <script src="<%= rootlink %>/js/sweetalert2.js"></script>
+  <style>
+    img {
+      max-width: 100%;
+    }
+  </style>
+</head>
+
+<body>　
+
+  <div class="ui fixed borderless menu" style="height: 50px;">
+    <div class="ui container">
+      <% if (confing.logo) { %>
+      <a class="item" href="/"><img src="<%= rootlink %><%= confing.logo %>" style="height:35px;width:100px;"></a>
+      <% } %>
+      <% if (session.isphone) { %>
+        <div class="ui item simple dropdown">
+          <span>功能<i class="dropdown icon"></span></i>
+          <div class="menu">
+      <% } %>
+      <% for (var i = 0; i < menu.list.length; i++) { %>
+        <a class="item" href="<%= rootlink %><%= menu.list[i].url %>"><%= menu.list[i].name %></a>
+      <% } %>
+      <% if (session.isphone) { %>
+          </div>
+        </div>
+      <% } %>
+    <div class="right menu">
+    <% if (user) { %>
+      <div class="ui item simple dropdown">
+        <img class="ui avatar image" src="<%= user.avatar %>"><span><%= user.name %>
+        <i class="dropdown icon"></span></i>
+        <div class="menu">
+        <% for (var i = 0; i < menu.userlist.length; i++) { %>
+          <a class="item" href="<%= rootlink %><%= menu.userlist[i].url %>"><%= menu.userlist[i].name %></a>
+        <% } %>
+        <% if (user.isadmin && session.isphone) { %>
+          <a class="ui item simple dropdown" href="<%= rootlink %>/admin/"><i class="cogs icon"></i> 管理后台</a>
+        <% } %>
+          <a class="item" href="javascript:void(0);" onclick="logout()"><i class="power icon"></i>注销</a>
+        </div>
+      </div>
+      <% if (user.isadmin && !session.isphone) { %>
+        <a class="ui item simple dropdown" href="<%= rootlink %>/admin/"><i class="cogs icon"></i> 管理后台</a>
+      <% } %>
+    <% } else { %>
+      <div class="ui item simple dropdown">
+        <i class="user icon"></i> 用户
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item" href="<%= rootlink %>/user/login">登入</a>
+          <a class="item" href="<%= rootlink %>/user/register">注册</a>
+        </div>
+      </div>
+    <% } %>
+    </div>
+  </div>
+  </div>
+  <div class="ui container" style="margin-top: 55px;">
+    <div class="ui tab active wide container">
+      <div style="margin-top: 28px;">
+        <div class="ui main wide container">
+            <div class="ui stackable two column grid">
+              <div class="two column row">
