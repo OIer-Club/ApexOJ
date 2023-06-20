@@ -2,9 +2,9 @@
     var pageTitle = "";
     if (title)
         pageTitle = title + " | ";
-    pageTitle += confing.title;
-    var rootlink = confing.root;
-    var menu = confing.menu;
+    pageTitle += config.title;
+    var rootlink = config.root;
+    var menu = config.menu;
     var user = session.user;
 %>
 <!doctype html>
@@ -31,8 +31,8 @@
 
   <div class="ui fixed borderless menu" style="height: 50px;">
     <div class="ui container">
-      <% if (confing.logo) { %>
-      <a class="item" href="/"><img src="<%= rootlink %><%= confing.logo %>" style="height:35px;width:100px;"></a>
+      <% if (config.logo) { %>
+      <a class="item" href="/"><img src="<%= rootlink %><%= config.logo %>" style="height:35px;width:100px;"></a>
       <% } %>
       <% if (session.isphone) { %>
         <div class="ui item simple dropdown">
