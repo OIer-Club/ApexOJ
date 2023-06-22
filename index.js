@@ -53,6 +53,7 @@ app.get('/', function(req, res){
   });
 });
 app.post('/api/user/login', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
   let username = validator.escape(req.body.username);
   let password = validator.escape(req.body.password);
   password = setpassword(password,config.server.md5key);
@@ -63,13 +64,13 @@ app.post('/api/user/login', function(req, res) {
       return;
     }
     if(result.length == 0) {
-      res.post({code:"NO"});
+      res.json({code:"NO"});
     } else {
       if(password == result[0].password) {
         req.session.user = result[0];
-        res.post({code:"YES"});
+        res.json({code:"YES"});
       } else {
-        res.post({code:"NO"});
+        res.json({code:"NO"});
       }
     }
   });

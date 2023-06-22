@@ -1,15 +1,18 @@
 const crypto = require("crypto");
 
-function setpassword(password,key){
-    var password=`|${pwd}|${key}|`
+function tomd5(pwd,key){
+    let password=`${pwd}|${key}`
     const md5 = crypto.createHash('md5');
     md5.update(password);
-    password = md5.digest('hex');
-    md5.update(password);
-    password = md5.digest('hex');
-    md5.update(password);
-    var newpassword = md5.digest('hex');
-    return newpassword;
+    var newpwd=md5.digest('hex');
+    return newpwd;
 }
 
-module.exports=setpassword
+function setPassword(pwd,key) {
+    pwd = tomd5(pwd,key);
+    pwd = tomd5(pwd,key);
+    pwd = tomd5(pwd,key);
+    return pwd;
+}
+
+module.exports=setPassword
