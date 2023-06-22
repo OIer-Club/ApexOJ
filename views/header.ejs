@@ -59,7 +59,7 @@
         <% if (user.isadmin && session.isphone) { %>
           <a class="ui item simple dropdown" href="<%= rootlink %>/admin/"><i class="cogs icon"></i> 管理后台</a>
         <% } %>
-          <a class="item" href="javascript:void(0);" onclick="logout()"><i class="power icon"></i>注销</a>
+          <a class="item" href="javascript:void(0);" onclick="user_logout()"><i class="power icon"></i>注销</a>
         </div>
       </div>
       <% if (user.isadmin && !session.isphone) { %>

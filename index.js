@@ -68,7 +68,7 @@ app.post('/api/user/login', function(req, res) {
     } else {
       if(password == result[0].password) {
         req.session.user = result[0];
-        res.json({code:"YES"});
+        res.json({code:"OK"});
       } else {
         res.json({code:"NO"});
       }
