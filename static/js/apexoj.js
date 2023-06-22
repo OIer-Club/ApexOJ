@@ -26,7 +26,7 @@ function user_login() {
       swalx("账号/密码错误", 2);
       document.getElementById("login_password").value = "";
     } else {
-      swalx("未知错误,请重试", 2);
+      swalx("未知错误,请重试", 10);
     }
   });
 }
@@ -45,17 +45,18 @@ function user_register() {
     document.getElementById("register_password").value = "";
     document.getElementById("register_repassword").value = "";
   } else {
+    swalx("验证中，请耐心等待。", 5);
     $.post('/api/user/register', {
-      "username": document.getElementById("login_username").value,
-      "password": document.getElementById("login_password").value,
-      "email": document.getElementById("login_email").value
+      "username": document.getElementById("register_username").value,
+      "password": document.getElementById("register_password").value,
+      "email": document.getElementById("register_email").value
     }, function (data) {
       if (data.code == 'OK') {
         window.location.href = "/user/email_key?token=" + data.token;
       } else if (data.code == "NO") {
         swalx(data.message, 2);
       } else {
-        swalx("未知错误,请重试" + data.message, 2);
+        swalx("未知错误,请重试" + data.message, 10);
       }
     });
   }
