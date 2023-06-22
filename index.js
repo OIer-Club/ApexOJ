@@ -184,7 +184,7 @@ app.post('/api/user/register', function (req, res) {
               from: `${config.main.title} <${config.server.smtp.account}>`,
               to: email,
               subject: `${config.main.title}注册验证邮件`,
-              html: `您的 Key: ${email_key} <br/> 如果不是您注册请忽略此邮件`
+              html: `您的 Key: ${email_key} <br/> <a href="http://${config.main.host}/user/email_key?token=${token}&key=${email_key}">点击此链接一键注册</a> <br/> 如果不是您注册请忽略此邮件`
             }, function (err, result) {
               if (err) {
                 res.json({ code: "NO", message: "邮件发送失败，请重试。多次失败请联系管理员。"+err });
