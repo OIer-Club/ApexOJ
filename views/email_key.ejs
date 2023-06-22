@@ -1,0 +1,31 @@
+<%- include('header'); -%>
+  <form class="ui form">
+    <h2 style="margin-bottom: 10px;"><i class="user plus icon"></i>注册验证</h2>
+      <div class="field">
+        <input type="text" id="email_token" placeholder="Token" style="margin-bottom: 5px;">
+        <input type="text" id="email_key" placeholder="Key" style="margin-bottom: 5px;">
+        <a href="javascript:void(0)" onclick="user_register_email()" class="ui teal button"
+            style="background: linear-gradient(45deg, #00b5ad, #7f00ff); box-shadow: 2px 5px 10px #aaa"><i
+            class="location arrow icon"></i>验证</a>
+      </div>
+  </form>
+
+<script>
+  function user_register_email() {
+    $.post('/api/user/email_key', {
+      "token": document.getElementById("email_token").value,
+      "email_key": document.getElementById("email_key").value
+    }, function (data) {
+      if (data.code == 'OK') {
+        swalx("注册成功，请登入！", 2);
+        window.location.href = "/";
+      } else if (data.code == "NO") {
+        swalx(data.message, 2);
+      } else {
+        swalx("未知错误,请重试" + data.message, 2);
+      }
+    });
+  }
+  document.getElementById("email_token").value = _GET[token];
+</script>
+    <%- include('footer'); -%>
