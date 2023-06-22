@@ -44,27 +44,35 @@
 
 ### /（首页）
 
-### /user/login
-
-### /user/register
+现在首页什么都没有。
 
 ## API接口返回
-
-### /api/captcha
-
-返回一张图片
 
 ### /api/user/login POST
 
 请求字段
 
 ```json
-{ "username":"", "password":"", "captcha": "" }
+{ "username":"", "password":""}
 ```
 
 返回字段
 
 ```json
-{ "code":"" } /* code 返回有三种 "OK" / "NOlogin" / "NOcaptcha" / "ERROR" */
+{ "code":"" } /* code 返回有三种 "OK" / "NO" / "ERROR" */
+```
+
+### /api/user/register POST
+
+请求字段
+
+```json
+{ "username":"", "password":"", "email":""}
+```
+
+返回字段
+
+```json
+{ "code":"", "token (code==OK)": "", "message (code==NO)": "" }
 ```
 

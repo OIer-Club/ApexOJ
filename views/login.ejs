@@ -1,0 +1,38 @@
+<div id="userlogin" style="display:none;position:absolute;top:10px;left:10px;width: 100%;">
+  <div style="margin-top: 120px;">
+    <div class="ui placeholder segment"
+      style="width: 60%;margin-left: 20%; margin-right: 20%; box-shadow: 0px 2px 10px #aaa">
+      <div class="ui two column center aligned grid">
+        <div class="ui vertical divider">或者</div>
+        <div class="middle aligned row">
+          <div class="column">
+            <form class="ui form">
+              <h2 style="margin-bottom: 10px;"><i class="user plus icon"></i> 注册</h2>
+              <div class="field">
+                <input type="text" id="register_username" placeholder="用户名" style="margin-bottom: 5px;">
+                <input type="password" id="register_password" placeholder="密码" style="margin-bottom: 5px;">
+                <input type="password" id="register_repassword" placeholder="再次输入密码" style="margin-bottom: 5px;">
+                <input type="text" id="register_email" placeholder="邮箱地址" style="margin-bottom: 5px;">
+                <a href="javascript:void(0)" onclick="user_register()" class="ui teal button"
+                  style="background: linear-gradient(45deg, #00b5ad, #7f00ff); box-shadow: 2px 5px 10px #aaa"><i
+                    class="location arrow icon"></i> 发送验证邮件</a>
+              </div>
+            </form>
+          </div>
+          <div class="column">
+            <form class="ui form">
+              <h2 style="margin-bottom: 10px;"><i class="sign in icon"></i> 登录</h2>
+              <div class="field">
+                <input type="text" id="login_username" placeholder="用户名" style="margin-bottom: 5px;">
+                <input type="password" id="login_password" placeholder="密码" style="margin-bottom: 5px;">
+                <a href="javascript:void(0)" onclick="user_login()" class="ui teal button" style="background: linear-gradient(45deg, #7f00ff, #ff7c00);"><i
+                    class="location arrow icon"></i> 发射！</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+</div>

@@ -20,6 +20,7 @@
   <script src="<%= rootlink %>/js/semantic.min.js"></script>
   <script src="<%= rootlink %>/js/base64.js"></script>
   <script src="<%= rootlink %>/js/sweetalert2.js"></script>
+  <script src="<%= rootlink %>/js/apexoj.js"></script>
   <style>
     img {
       max-width: 100%;
@@ -69,8 +70,8 @@
         <i class="user icon"></i> 用户
         <i class="dropdown icon"></i>
         <div class="menu">
-          <a class="item" href="<%= rootlink %>/user/login">登入</a>
-          <a class="item" href="<%= rootlink %>/user/register">注册</a>
+          <a class="item" href="javascript:void(0)" onclick="user_login_enter()">登入</a>
+          <a class="item" href="javascript:void(0)" onclick="user_login_enter()">注册</a>
         </div>
       </div>
     <% } %>
