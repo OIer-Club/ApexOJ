@@ -89,3 +89,26 @@ function swalx(data, time) {
     timer: 1000 * time
   }).then();
 }
+
+function load_usercard() {
+  //$(this).attr("uid")
+  let get_userlist = new Array();
+  $(".apexoj-usercard").each(function () {
+    get_userlist.push($(this).text());
+  });
+  get_userlist = [...new Set(get_userlist)];
+  $.post('/api/user/find', {
+    "userlist": get_userlist.join(','),
+    "type": "id"
+  }, function (data) {
+    let userlist = data.userlist;
+    for (let i = 0; i < userlist.length; i++) {
+      $(`.user-id${userlist[i].id}-name`).html(`${userlist[i].name}`);
+      $(`.user-id${userlist[i].id}-avatar`).attr('src', `${userlist[i].avatar}`);
+    }
+  });
+}
+
+window.onload = function () {
+  load_usercard();
+}

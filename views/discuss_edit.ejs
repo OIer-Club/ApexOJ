@@ -1,0 +1,39 @@
+<%- include('header'); -%>
+
+<div class="twelve wide column">
+    <div class="ui container segment">
+        <div class="ui form">
+            <div class="field">
+                <label>标题</label>
+                <input name="title" id="discuss_title" placeholder="讨论标题" type="text" value="<%= discuss.main.title %>">
+            </div>
+            <div class="field">
+                <label>内容</label>
+                <textarea name="content" id="discuss_content" placeholder="讨论内容"><%= discuss.main.content %></textarea>
+            </div>
+            <button class="ui labeled icon button" type="submit" onclick="discuss_edit()">
+                <i class="paper plane outline icon"></i> 修改该讨论
+            </button>
+        </div>
+    </div>
+    <script>
+        function discuss_edit() {
+            $.post('/api/discuss/<%= discuss.main.id %>/edit', {
+              "title": $('#discuss_title').val(),
+              "content": $('#discuss_content').val()
+            }, function (data) {
+                if (data.code == 'OK') {
+                    window.location.href = "/discuss/<%= discuss.main.id %>";
+                } else if (data.code == "NO") {
+                    swalx(data.message, 2);
+                } else {
+                    swalx("未知错误,请重试" + data.message, 10);
+                }
+            });
+        }
+    </script>
+</div>
+<div class="four wide column">
+</div>
+    
+<%- include('footer'); -%>

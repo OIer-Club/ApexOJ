@@ -1,0 +1,132 @@
+<%- include('header'); -%>
+<div class="twelve wide column">
+    <div class="ui container segment">
+      <div class="ui link items">
+        <div class="item">
+          <div class="ui tiny image">
+            <img class="user-id<%= discuss.main.user %>-avatar" src="#">
+          </div>
+          <div class="content">
+            <div class="header"><%= discuss.main.title %></div>
+            <div class="description"><%= discuss.main.content %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% for (var i=0; i < discuss.content.length; i++) { 
+      if(discuss.content[i].hidden==false || (session.user && session.user.isadmin)) { %>
+    <div class="ui container segment">
+      <div class="ui link items">
+        <div class="item">
+          <div class="ui tiny image">
+            <img class="user-id<%= discuss.content[i].user %>-avatar" src="#">
+          </div>
+          <div class="content">
+            <div class="description"><p><span class="apexoj-usercard user-id<%= discuss.content[i].user %>-name"><%= discuss.content[i].user %></span></p><%= discuss.content[i].content %></div>
+            <% if (session.user && session.user.isadmin) { %>
+              <div class="extra">
+                <% if (discuss.content[i].hidden==true) { %><a class="ui tag label">此回复已隐藏</a><% } %>
+                <a class="ui icon right floated primary small button" onclick="content_delete(<%= discuss.content[i].id %>)" href="javascript:void(0)">删除此回复</a>
+              </div>
+            <% } %>
+          </div>
+        </div>
+    </div>
+</div>
+  <% } } %>
+    <center>
+      <div class="ui pagination menu">
+        <% if (page !=1) { %><a class="item" href="?page=<%= page-1 %>"><i class="icon angle left"></i> 上一页</a>
+          <% } %>
+            <a class="item" href="?page=<%= page+1 %>">下一页 <i class="icon angle right"></i></a>
+      </div>
+    </center>
+  <% if (session.user && !session.user.is_ban_discuss) { %>
+    <div class="ui container segment">
+      <div class="ui form">
+        <div class="field">
+          <label>回复</label>
+          <textarea name="content" id="discuss_content" placeholder="请输入回复内容"></textarea>
+        </div>
+        <button class="ui labeled icon button" type="submit" onclick="discuss_new()">
+          <i class="paper plane outline icon"></i> 发射！
+        </button>
+      </div>
+    </div>
+    <script>
+      function discuss_new() {
+        if (isload) {
+          swalx("加载中，请等待。", 2);
+        } else {
+          isload = true;
+          $.post('/api/discuss/<%= discuss.main.id %>/new', {
+            "content": $('#discuss_content').val()
+          }, function (data) {
+            if (data.code == 'OK') {
+              document.getElementById("discuss_content").value = "";
+              location.reload();
+            } else if (data.code == "NO") {
+              swalx(data.message, 2);
+              isload = false;
+            } else {
+              swalx("未知错误,请重试" + data.message, 10);
+              isload = false;
+            }
+          });
+        }
+      }
+      function content_delete(content_id) {
+        if (isload) {
+          swalx("加载中，请等待。", 2);
+        } else {
+          isload = true;
+          $.post(`/api/discuss/<%= discuss.main.id %>/${content_id}/delete`, {}, function (data) {
+            if (data.code == 'OK') {
+              location.reload();
+            } else if (data.code == "NO") {
+              swalx(data.message, 2);
+              isload = false;
+            } else {
+              swalx("未知错误,请重试" + data.message, 10);
+              isload = false;
+            }
+          });
+        }
+      }
+      function discuss_delete() {
+        if (isload) {
+          swalx("加载中，请等待。", 2);
+        } else {
+          isload = true;
+          $.post(`/api/discuss/<%= discuss.main.id %>/delete`, {}, function (data) {
+            if (data.code == 'OK') {
+              window.location.href = "/discuss";
+            } else if (data.code == "NO") {
+              swalx(data.message, 2);
+              isload = false;
+            } else {
+              swalx("未知错误,请重试" + data.message, 10);
+              isload = false;
+            }
+          });
+        }
+      }
+    </script>
+  <% } %>
+</div>
+<div class="four wide column">
+  <div class="ui container segment">
+  <p>楼主：<span class="apexoj-usercard user-id<%= discuss.main.user %>-name"><%= discuss.main.user %></span></p>
+  <p>帖子ID: <%= discuss.main.id %></p>
+  </div>
+  <% if (session.user && (session.user.isadmin || session.user.id == discuss.main.user)) { %>
+    <div class="ui container segment">
+      <% if (session.user && session.user.isadmin) { %>
+        <% if (discuss.main.hidden) { %><a class="ui tag label">此讨论为隐藏讨论</a><% } %>
+        <a class="ui icon primary button" href="/discuss/<%= discuss.main.id %>/edit"><i class="icon settings"></i> 编辑此讨论</a>
+      <% } %>
+      <a class="ui icon primary button" onclick="discuss_delete()" href="javascript:void(0)">删除此讨论</a>
+    </div>
+  <% } %>
+</div>
+<%- include('footer'); -%>

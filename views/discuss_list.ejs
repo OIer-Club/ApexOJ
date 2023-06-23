@@ -1,0 +1,84 @@
+<%- include('header'); -%>
+  <div class="twelve wide column">
+    <% for (var i=0; i < discuss.list.length; i++) { 
+      if(!discuss.list[i].hidden || (session.user && session.user.isadmin)) { %>
+      <div class="ui container segment">
+        <div class="ui link items">
+          <div class="item">
+            <div class="ui tiny image">
+              <img class="user-id<%= discuss.list[i].user %>-avatar" src="#">
+            </div>
+            <div class="content">
+              <a class="header" href="/discuss/<%= discuss.list[i].id %>">
+                <%= discuss.list[i].title %>
+              </a>
+              <a class="description" href="/discuss/<%= discuss.list[i].id %>">
+                <p>楼主：<span class="apexoj-usercard user-id<%= discuss.list[i].user %>-name"><%= discuss.list[i].user %></span> | 帖子ID: <%= discuss.list[i].id %>
+                </p>
+              </a>
+              <div class="extra">
+                <% if (session.user && session.user.isadmin) { %>
+                  <% if (discuss.list[i].hidden==true) { %><a class="ui tag label">此讨论已隐藏</a><% } %>
+                  <a class="ui icon button" href="/discuss/<%= discuss.list[i].id %>/edit"><i class="icon settings"></i> 编辑此讨论</a>
+                <% } %>
+                  <a class="ui right floated primary button" href="/discuss/<%= discuss.list[i].id %>">进入此讨论<i class="right chevron icon"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } } %>
+      <center>
+        <div class="ui pagination menu">
+          <% if (page !=1) { %><a class="item" href="?page=<%= page-1 %>"><i class="icon angle left"></i> 上一页</a>
+            <% } %>
+              <a class="item" href="?page=<%= page+1 %>">下一页 <i class="icon angle right"></i></a>
+        </div>
+      </center>
+    <% if (session.user && !session.user.is_ban_discuss) { %>
+      <div class="ui container segment">
+        <div class="ui form">
+          <div class="field">
+            <label>标题</label>
+            <input name="title" id="discuss_title" placeholder="请输入讨论标题" type="text" value="">
+          </div>
+          <div class="field">
+            <label>内容</label>
+            <textarea name="content" id="discuss_content" placeholder="请输入讨论内容"></textarea>
+          </div>
+          <button class="ui labeled icon button" type="submit" onclick="discuss_new()">
+            <i class="paper plane outline icon"></i> 发射讨论！
+          </button>
+        </div>
+      </div>
+      <script>
+        function discuss_new() {
+          if (isload) {
+            swalx("加载中，请等待。", 2);
+          } else {
+            isload = true;
+            $.post('/api/discuss/new', {
+              "title": $('#discuss_title').val(),
+              "content": $('#discuss_content').val()
+            }, function (data) {
+              if (data.code == 'OK') {
+                document.getElementById("discuss_title").value = "";
+                document.getElementById("discuss_content").value = "";
+                window.location.href = `/discuss/${data.newID}`;
+              } else if (data.code == "NO") {
+                swalx(data.message, 2);
+                isload = false;
+              } else {
+                swalx("未知错误,请重试" + data.message, 10);
+                isload = false;
+              }
+            });
+          }
+        }
+      </script>
+      <% } %>
+  </div>
+  <div class="four wide column">
+
+  </div>
+  <%- include('footer'); -%>
