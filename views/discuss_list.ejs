@@ -27,12 +27,16 @@
           </div>
         </div>
       </div>
-      <% } } %>
+      <%   
+          }
+        }
+        var left_page = Number(page)-1;
+        var right_page = Number(page)+1;
+      %>
       <center>
         <div class="ui pagination menu">
-          <% if (page !=1) { %><a class="item" href="?page=<%= page-1 %>"><i class="icon angle left"></i> 上一页</a>
-            <% } %>
-              <a class="item" href="?page=<%= page+1 %>">下一页 <i class="icon angle right"></i></a>
+          <% if (page !=1) { %><a class="item" href="?page=<%= left_page %>"><i class="icon angle left"></i> 上一页</a><% } %>
+          <a class="item" href="?page=<%= right_page %>">下一页 <i class="icon angle right"></i></a>
         </div>
       </center>
     <% if (session.user && !session.user.is_ban_discuss) { %>

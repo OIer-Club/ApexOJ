@@ -64,8 +64,13 @@ app.get('/discuss', function (req, res) {
 
   let discuss = {};
 
+  let admin_sql = `WHERE hidden = false`;
+  if(req.session.user && req.session.user.isadmin) {
+    admin_sql = ``; // 管理查看被隐藏的讨论
+  }
+
   // 读取数据库 discuss_list 表 逆序 10条
-  let sql = `SELECT * FROM discuss_list ORDER BY id DESC LIMIT ${firstlist},${endlist};`;
+  let sql = `SELECT * FROM discuss_list ${admin_sql} ORDER BY id DESC LIMIT ${firstlist},${endlist};`;
   connection.query(sql, function (err, result) {
     if (err) {
       discuss = { code: "ERROR", message: '[SELECT ERROR] - ' + err.message };
@@ -108,7 +113,12 @@ app.get('/discuss/:id', function (req, res) {
 
   let discuss = {};
 
-  let sql = `SELECT * FROM discuss_list WHERE id = '${discuss_id}'`;
+  let admin_sql = `AND hidden = false`;
+  if(req.session.user && req.session.user.isadmin) {
+    admin_sql = ``; // 管理查看被隐藏的讨论
+  }
+
+  let sql = `SELECT * FROM discuss_list WHERE id = '${discuss_id}' ${admin_sql}`;
   connection.query(sql, function (err, result) {
     if (err) {
       discuss = { code: "ERROR", message: '[SELECT ERROR] - ' + err.message };
@@ -122,7 +132,7 @@ app.get('/discuss/:id', function (req, res) {
     }
     if (discuss.code == "OK") {
       // 读取数据库 discuss_content 表 10 条
-      let sql = `SELECT * FROM discuss_content WHERE discuss_id = '${discuss_id}' LIMIT ${firstlist},${endlist};`;
+      let sql = `SELECT * FROM discuss_content WHERE discuss_id = '${discuss_id}' ${admin_sql} LIMIT ${firstlist},${endlist};`;
       connection.query(sql, function (err, result) {
         if (err) {
           discuss = { code: "ERROR", message: '[SELECT ERROR] - ' + err.message };
